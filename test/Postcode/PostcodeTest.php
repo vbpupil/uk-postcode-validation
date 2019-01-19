@@ -7,11 +7,12 @@
  * @license: MIT See LICENSE.md
  */
 
-namespace Test\vbpupil;
+namespace Test\vbpupil\Postcode;
 
 use Exception;
 use PHPUnit\Framework\TestCase;
-use vbpupil\Postcode;
+use vbpupil\Postcode\Postcode;
+
 
 /**
  * Class PostcodeTest
@@ -29,10 +30,9 @@ class PostcodeTest extends TestCase
      */
     public function testPassedValueIsString()
     {
-        $this->sut = new Postcode();
 
         try{
-            $this->sut->validate(2);
+            $this->sut = new Postcode(2);
         }catch(\Exception $e){
             $this->assertEquals('Non string value passed.', $e->getMessage());
         }
@@ -43,10 +43,9 @@ class PostcodeTest extends TestCase
      */
     public function testEmptyPostcode()
     {
-        $this->sut = new Postcode();
 
         try{
-            $this->sut->validate('');
+            $this->sut = new Postcode('');
         }catch(\Exception $e){
             $this->assertEquals('Empty Postcode.', $e->getMessage());
         }
@@ -57,10 +56,8 @@ class PostcodeTest extends TestCase
      */
     public function testPostcodeIsNotValid()
     {
-        $this->sut = new Postcode();
-
         try{
-            $this->sut->validate('NN00 1234');
+            $this->sut = new Postcode('NN00 1234');
         }catch(\Exception $e){
             $this->assertEquals('Invalid Postcode.', $e->getMessage());
         }
@@ -71,10 +68,9 @@ class PostcodeTest extends TestCase
      */
     public function testPostcodeIsNotRecognised()
     {
-        $this->sut = new Postcode();
 
         try{
-            $this->sut->validate('NB1 7JY');
+            $this->sut = new Postcode('NB1 7JY');
         }catch(\Exception $e){
             $this->assertEquals('Non recognised postcode.', $e->getMessage());
         }
@@ -138,10 +134,9 @@ class PostcodeTest extends TestCase
      */
     public function loopPcodes($arr, $expectedType)
     {
-        $this->sut = new Postcode();
 
         foreach ($arr as $p){
-            $this->sut->validate($p);
+            $this->sut = new Postcode($p);
             $this->assertEquals($expectedType, $this->sut->getType());
         }
     }

@@ -7,7 +7,7 @@
  * @license: MIT See LICENSE.md
  */
 
-namespace vbpupil;
+namespace vbpupil\Postcode;
 
 use Exception;
 
@@ -28,6 +28,10 @@ class Postcode
      */
     protected $type = NULL;
 
+    public function __construct($code)
+    {
+        $this->type = $this->validate($code);
+    }
 
     /**
      * @param $code
@@ -52,7 +56,7 @@ class Postcode
         }
 
         //performs a postcode lookup to identify where this postcode is geographically
-        $this->postcodeLookup();
+        $this->identify();
 
         if (is_null($this->type)) {
             throw new Exception('Non recognised postcode.');
@@ -67,7 +71,7 @@ class Postcode
      *
      * @return null|string
      */
-    protected function postcodeLookup()
+    protected function identify()
     {
         if ($this->isScottishHighland()) {
             $this->type = 'SCOTTISH_HIGHLAND';
