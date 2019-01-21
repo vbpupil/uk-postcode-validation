@@ -104,13 +104,13 @@ class PostcodeTest extends TestCase
     {
         $arr = [
             'postcode' => [
-                'MK10 1SJ', 'NN 14 P W'
+                'MK10 1SJ', 'NN 14 P W', 'SW1A1AA'
             ],
             'head' => [
-                'MK10', 'NN1'
+                'MK10', 'NN1','SW1A'
             ],
             'tail' => [
-                '1SJ', '4PW'
+                '1SJ', '4PW','1AA'
             ],
             'expected_type' => 'UK_MAINLAND'
         ];
