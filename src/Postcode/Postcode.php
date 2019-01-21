@@ -10,6 +10,7 @@
 namespace vbpupil\Postcode;
 
 use Exception;
+use vbpupil\Exceptions\InvalidPostcodeException;
 
 /**
  * Class Postcode
@@ -41,7 +42,7 @@ class Postcode
     public function __construct($code)
     {
 
-        if($this->validate($code)){
+        if ($this->validate($code)) {
             $this->identify();
             $this->setTail();
             $this->setHead();
@@ -56,51 +57,41 @@ class Postcode
     public function validate($code = null)
     {
         if (is_null($code) || $code == '') {
-            throw new Exception('Empty Postcode.');
+            throw new InvalidPostcodeException('Empty Postcode.');
         }
 
         if (!is_string($code)) {
-            throw new Exception('Non string value passed.');
+            throw new InvalidPostcodeException('Non string value passed.');
         }
 
         //regularizes postcode by removing spaces and pushing to uppercase
         $this->postcode = preg_replace('/\s+/', '', strtoupper($code));
 
         if (!$this->isValid()) {
-            throw new Exception('Invalid Postcode.');
+            throw new InvalidPostcodeException('Invalid Postcode.');
         }
 
         //performs a postcode lookup to identify where this postcode is geographically
         $this->identify();
 
         if (is_null($this->type)) {
-            throw new Exception('Non recognised postcode.');
+            throw new InvalidPostcodeException('Non recognised postcode.');
         }
 
         return true;
     }
 
-    /**
-     *
-     */
     protected function setHead()
     {
-        if(!is_null($this->tail)){
+        if (!is_null($this->tail)) {
             $this->head = str_replace($this->tail, '', $this->postcode);
         }
     }
 
-    /**
-     *
-     */
     protected function setTail()
     {
         preg_match('/[0-9][a-zA-Z]{2}$/', $this->postcode, $m);
         $this->tail = $m[0];
-
-//        if(!is_null($this->head)){
-//            $this->tail = str_replace($this->head, '', $this->postcode);
-//        }
     }
 
     /**

@@ -11,6 +11,7 @@ namespace Test\vbpupil\Postcode;
 
 use Exception;
 use PHPUnit\Framework\TestCase;
+use vbpupil\Exceptions\InvalidPostcodeException;
 use vbpupil\Postcode\Postcode;
 
 
@@ -26,7 +27,7 @@ class PostcodeTest extends TestCase
     public $sut;
 
     /**
-     *
+     * Checking that what we have been given is NOT a string
      */
     public function testPassedValueIsString()
     {
@@ -34,12 +35,13 @@ class PostcodeTest extends TestCase
         try {
             $this->sut = new Postcode(2);
         } catch (\Exception $e) {
+            $this->assertTrue($e instanceof InvalidPostcodeException);
             $this->assertEquals('Non string value passed.', $e->getMessage());
         }
     }
 
     /**
-     *
+     * Checking that what we have been given IS empty
      */
     public function testEmptyPostcode()
     {
@@ -47,24 +49,26 @@ class PostcodeTest extends TestCase
         try {
             $this->sut = new Postcode('');
         } catch (\Exception $e) {
+            $this->assertTrue($e instanceof InvalidPostcodeException);
             $this->assertEquals('Empty Postcode.', $e->getMessage());
         }
     }
 
     /**
-     *
+     * Checking that the postcode we have been give is NOT valid
      */
     public function testPostcodeIsNotValid()
     {
         try {
             $this->sut = new Postcode('NN00 1234');
         } catch (\Exception $e) {
+            $this->assertTrue($e instanceof InvalidPostcodeException);
             $this->assertEquals('Invalid Postcode.', $e->getMessage());
         }
     }
 
     /**
-     *
+     * Checking that the postcode has NOT been able to be identified
      */
     public function testPostcodeIsNotRecognised()
     {
@@ -72,6 +76,7 @@ class PostcodeTest extends TestCase
         try {
             $this->sut = new Postcode('NB1 7JY');
         } catch (\Exception $e) {
+            $this->assertTrue($e instanceof InvalidPostcodeException);
             $this->assertEquals('Non recognised postcode.', $e->getMessage());
         }
     }
@@ -160,6 +165,26 @@ class PostcodeTest extends TestCase
         $this->loopPcodes($arr);
     }
 
+    /**
+     * @throws Exception
+     */
+    public function testIsleOfManPostcodes()
+    {
+        $arr = [
+            'postcode' => [
+                'IM13LD','IM1 1BE','IM1 1LB','IM1 5EB'
+            ],
+            'head' => [
+                'IM1','IM1','IM1','IM1'
+            ],
+            'tail' => [
+                '3LD','1BE','1LB','5EB'
+            ],
+            'expected_type' => 'ISLE_OF_MAN'
+        ];
+
+        $this->loopPcodes($arr);
+    }
 
     /**
      * Used to aid postcode lookup
