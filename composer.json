@@ -13,12 +13,12 @@
   ],
   "autoload": {
     "psr-4": {
-      "vbpupil\\" : "src/Postcode"
+      "vbpupil\\" : "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Test\\vbpupil\\": "test/Postcode"
+      "Test\\vbpupil\\": "test"
     }
   },
   "require": {
