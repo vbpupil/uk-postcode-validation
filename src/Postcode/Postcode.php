@@ -28,11 +28,23 @@ class Postcode
      */
     protected $type = NULL;
 
+    /**
+     * @var null
+     */
+    protected $head = NULL;
+
+    /**
+     * @var null
+     */
+    protected $tail = NULL;
+
     public function __construct($code)
     {
 
         if($this->validate($code)){
             $this->identify();
+            $this->setTail();
+            $this->setHead();
         }
     }
 
@@ -64,7 +76,49 @@ class Postcode
         if (is_null($this->type)) {
             throw new Exception('Non recognised postcode.');
         }
+
+        return true;
     }
+
+    /**
+     *
+     */
+    protected function setHead()
+    {
+        if(!is_null($this->tail)){
+            $this->head = str_replace($this->tail, '', $this->postcode);
+        }
+    }
+
+    /**
+     *
+     */
+    protected function setTail()
+    {
+        preg_match('/[0-9][a-zA-Z]{2}$/', $this->postcode, $m);
+        $this->tail = $m[0];
+
+//        if(!is_null($this->head)){
+//            $this->tail = str_replace($this->head, '', $this->postcode);
+//        }
+    }
+
+    /**
+     * @return string
+     */
+    public function getHead()
+    {
+        return $this->head;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTail()
+    {
+        return $this->tail;
+    }
+
 
     /**
      * Note Scottish Highland is NOT Scotland

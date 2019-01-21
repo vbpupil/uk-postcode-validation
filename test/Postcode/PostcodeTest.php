@@ -31,9 +31,9 @@ class PostcodeTest extends TestCase
     public function testPassedValueIsString()
     {
 
-        try{
+        try {
             $this->sut = new Postcode(2);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->assertEquals('Non string value passed.', $e->getMessage());
         }
     }
@@ -44,9 +44,9 @@ class PostcodeTest extends TestCase
     public function testEmptyPostcode()
     {
 
-        try{
+        try {
             $this->sut = new Postcode('');
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->assertEquals('Empty Postcode.', $e->getMessage());
         }
     }
@@ -56,9 +56,9 @@ class PostcodeTest extends TestCase
      */
     public function testPostcodeIsNotValid()
     {
-        try{
+        try {
             $this->sut = new Postcode('NN00 1234');
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->assertEquals('Invalid Postcode.', $e->getMessage());
         }
     }
@@ -69,9 +69,9 @@ class PostcodeTest extends TestCase
     public function testPostcodeIsNotRecognised()
     {
 
-        try{
+        try {
             $this->sut = new Postcode('NB1 7JY');
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             $this->assertEquals('Non recognised postcode.', $e->getMessage());
         }
     }
@@ -81,11 +81,20 @@ class PostcodeTest extends TestCase
      */
     public function testIsHighlandPostcodes()
     {
-        $codes = [
-            'HS2 9NP'
+        $arr = [
+            'postcode' => [
+                'HS29NP'
+            ],
+            'head' => [
+                'HS2'
+            ],
+            'tail' => [
+                '9NP'
+            ],
+            'expected_type' => 'SCOTTISH_HIGHLAND'
         ];
 
-        $this->loopPcodes($codes, 'SCOTTISH_HIGHLAND');
+        $this->loopPcodes($arr);
     }
 
     /**
@@ -93,11 +102,20 @@ class PostcodeTest extends TestCase
      */
     public function testukMainlandPostcodes()
     {
-        $codes = [
-            'mk10 1SJ', 'nn14 pw'
+        $arr = [
+            'postcode' => [
+                'MK10 1SJ', 'NN 14 P W'
+            ],
+            'head' => [
+                'MK10', 'NN1'
+            ],
+            'tail' => [
+                '1SJ', '4PW'
+            ],
+            'expected_type' => 'UK_MAINLAND'
         ];
 
-        $this->loopPcodes($codes, 'UK_MAINLAND');
+        $this->loopPcodes($arr);
     }
 
     /**
@@ -105,11 +123,20 @@ class PostcodeTest extends TestCase
      */
     public function testNorthernIrelandPostcodes()
     {
-        $codes = [
-            'BT11LA','BT1 1DA','BT1 1ND','BT1 1FP','BT11EB','BT1 1QB','BT1 1NE'
+        $arr = [
+            'postcode' => [
+                'BT11LA', 'BT1 1DA', 'BT1 1ND', 'BT1 1FP', 'BT11EB', 'BT1 1QB', 'BT1 1NE'
+            ],
+            'head' => [
+                'BT1', 'BT1', 'BT1', 'BT1', 'BT1', 'BT1', 'BT1'
+            ],
+            'tail' => [
+                '1LA', '1DA', '1ND', '1FP', '1EB', '1QB', '1NE'
+            ],
+            'expected_type' => 'NORTHERN_IRE'
         ];
 
-        $this->loopPcodes($codes, 'NORTHERN_IRE');
+        $this->loopPcodes($arr);
     }
 
     /**
@@ -117,11 +144,20 @@ class PostcodeTest extends TestCase
      */
     public function testIsleOfWhightPostcodes()
     {
-        $codes = [
-            'PO301NR'
+        $arr = [
+            'postcode' => [
+                'PO301NR'
+            ],
+            'head' => [
+                'PO30'
+            ],
+            'tail' => [
+                '1NR'
+            ],
+            'expected_type' => 'ISLE_OF_WIGHT'
         ];
 
-        $this->loopPcodes($codes, 'ISLE_OF_WIGHT');
+        $this->loopPcodes($arr);
     }
 
 
@@ -129,15 +165,17 @@ class PostcodeTest extends TestCase
      * Used to aid postcode lookup
      *
      * @param $arr
-     * @param $expectedType
-     * @throws Exception
      */
-    public function loopPcodes($arr, $expectedType)
+    public function loopPcodes($arr)
     {
+        $cnt = 0;
 
-        foreach ($arr as $p){
+        foreach ($arr['postcode'] as $p) {
             $this->sut = new Postcode($p);
-            $this->assertEquals($expectedType, $this->sut->getType());
+            $this->assertEquals($arr['expected_type'], $this->sut->getType());
+            $this->assertEquals($arr['head'][$cnt], $this->sut->getHead());
+            $this->assertEquals($arr['tail'][$cnt], $this->sut->getTail());
+            $cnt++;
         }
     }
 }
