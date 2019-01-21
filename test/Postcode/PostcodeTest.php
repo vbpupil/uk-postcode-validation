@@ -106,7 +106,7 @@ class PostcodeTest extends TestCase
     public function testNorthernIrelandPostcodes()
     {
         $codes = [
-            'bt11aa'
+            'BT11LA','BT1 1DA','BT1 1ND','BT1 1FP','BT11EB','BT1 1QB','BT1 1NE'
         ];
 
         $this->loopPcodes($codes, 'NORTHERN_IRE');
