@@ -1,6 +1,6 @@
 {
-  "name": "vbpupil/postcode-validation",
-  "description": "Postcode Validation",
+  "name": "vbpupil/uk-postcode-validation",
+  "description": "UK Postcode Validation",
   "homepage": "https://github.com/vbpupil/postcodeValidation",
   "keywords": [
     "postcode"
