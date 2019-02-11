@@ -1,3 +1,9 @@
+## Quality Assurance
+
+![PHP 5.6](https://img.shields.io/badge/PHP-5.6-blue.svg)
+[![Build Status](https://travis-ci.org/vbpupil/uk-postcode-validation.svg?branch=master)](https://travis-ci.org/vbpupil/uk-postcode-validation)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+
 # UK Postcode Validation
 
 UK postcode validation tool used to determine that a string given is a valid UK Postcode. The object then returned contains the following:
