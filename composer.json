@@ -2,8 +2,9 @@
   "name": "vbpupil/uk-postcode-validation",
   "description": "UK Postcode Validation",
   "homepage": "https://github.com/vbpupil/postcodeValidation",
+  "license": "MIT",
   "keywords": [
-    "postcode"
+    "postcode", "postcodes", "postcode-validation"
   ],
   "authors": [
     {
